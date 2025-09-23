@@ -25,7 +25,7 @@ However, with a secret hotkey, you can instantly transform a line of your editor
 
 1.  **Clone the repo:**
     ```sh
-    git clone https://github.com/your_username/slacking_off_editor.git
+    git clone https://github.com/troyanovsky/slacking_off_editor.git
     ```
 2.  **Install NPM packages:**
     ```sh
