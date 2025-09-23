@@ -67,47 +67,55 @@ Users can discreetly read books of their choice while pretending to write in a p
 
 ## 3. Functional Requirements
 
-1. **Text Editor Requirements**
+1.  **Text Editor Requirements**
 
-   * Must support typing, editing, deleting, and scrolling.
-   * Must display line numbers dynamically.
-   * Must persist user text independently from injected book content.
+    *   Must support typing, editing, deleting, and scrolling.
+    *   Must display line numbers dynamically.
+    *   Must persist user text independently from injected book content.
 
-2. **Book Handling**
+2.  **Book Handling**
 
-   * Must parse and display `.txt` files directly.
-   * Must parse `.epub` files and extract plain text (ignoring heavy formatting).
-   * Inject book content line by line.
+    *   Must parse and display `.txt` files directly.
+    *   Must parse `.epub` files and extract plain text (ignoring heavy formatting).
+    *   Inject book content line by line.
 
-3. **Settings**
+3.  **Settings**
 
-   * File upload for book files.
-   * Integer input for “injection line” (with input validation).
-   * Display help instructions.
+    *   File upload for book files.
+    *   Integer input for “injection line” (with input validation).
+    *   Display help instructions.
 
-4. **Boss Key**
+4.  **Boss Key**
 
-   * Toggle between modes instantly.
-   * Must hide book content fully in “normal mode.”
+    *   Toggle between modes instantly.
+    *   Must hide book content fully in “normal mode.”
+
+5.  **Reading Progress Persistence**
+
+    *   The application must save the reading progress for the last 5 unique books.
+    *   Progress is defined as the last viewed page number.
+    *   When a previously loaded book is opened again, the user should be taken to their last saved page.
+    *   Book uniqueness is determined by the content of the file.
 
 ---
 
 ## 4. Non-Functional Requirements
 
-* **Stealth**
+*   **Stealth**
 
-  * UI must look like a normal, distraction-free text editor.
-  * No flashy animations or indicators of “hidden mode.”
-* **Performance**
+    *   UI must look like a normal, distraction-free text editor.
+    *   No flashy animations or indicators of “hidden mode.”
+*   **Performance**
 
-  * Smooth switching between modes with minimal lag.
-  * Handle large book files efficiently.
-* **Cross-Platform**
+    *   Smooth switching between modes with minimal lag.
+    *   Handle large book files efficiently.
+    *   Reading and writing progress to `localStorage` should be efficient and not block the UI.
+*   **Cross-Platform**
 
-  * Should work on desktop browsers. No need for mobile.
-* **Accessibility**
+    *   Should work on desktop browsers. No need for mobile.
+*   **Accessibility**
 
-  * Default font should be readable, typewriter-like.
+    *   Default font should be readable, typewriter-like.
 
 ---
 
@@ -115,19 +123,19 @@ Users can discreetly read books of their choice while pretending to write in a p
 
 **Flow 1: Normal Writing**
 
-1. Open app → Type in editor.
-2. Export or monitor word count as needed.
+1.  Open app → Type in editor.
+2.  Export or monitor word count as needed.
 
 **Flow 2: Configure Hidden Reader**
 
-1. Open settings.
-2. Upload `.epub`/`.txt`.
-3. Set injection line and line length.
-4. Close settings.
+1.  Open settings.
+2.  Upload `.epub`/`.txt`. The app automatically loads the last read page for that book if it exists.
+3.  Set injection line and line length.
+4.  Close settings.
 
 **Flow 3: Reading Mode**
 
-1. Hit boss key → editor switches to slacking mode.
-2. Book text injected at configured line.
-3. Navigate with keyboard shortcuts.
-4. Hit boss key again → return to normal writing view.
+1.  Hit boss key → editor switches to slacking mode.
+2.  Book text injected at configured line, starting from the last read position.
+3.  Navigate with keyboard shortcuts. Progress is saved automatically.
+4.  Hit boss key again → return to normal writing view.

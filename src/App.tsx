@@ -6,6 +6,14 @@ import Toolbar from './components/Toolbar';
 import SettingsModal from './components/SettingsModal';
 import { parseBook } from './lib/bookParser';
 import { useKeyPress } from './hooks/useKeyPress';
+import { calculateFileHash } from './lib/hash';
+
+const MAX_SAVED_BOOKS = 5;
+
+interface BookProgress {
+  hash: string;
+  currentPage: number;
+}
 
 function App() {
   const [userText, setUserText] = useState('');
@@ -16,7 +24,7 @@ function App() {
       ? JSON.parse(savedSettings)
       : { injectionLine: 5, lineLength: 80 };
   });
-  const [book, setBook] = useState<{ content: string[]; isLoaded: boolean; fileName: string }>({ content: [], isLoaded: false, fileName: '' });
+  const [book, setBook] = useState<{ content: string[]; isLoaded: boolean; fileName: string; hash: string }>({ content: [], isLoaded: false, fileName: '', hash: '' });
   const [isSlackingMode, setSlackingMode] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const lineNumbersRef = useRef<HTMLDivElement>(null);
@@ -25,19 +33,38 @@ function App() {
     localStorage.setItem('slacking_off_settings', JSON.stringify(settings));
   }, [settings]);
 
+  const saveReadingProgress = (hash: string, page: number) => {
+    if (!hash) return;
+    let progress: BookProgress[] = JSON.parse(localStorage.getItem('book_progress') || '[]');
+    const existingIndex = progress.findIndex(p => p.hash === hash);
+    if (existingIndex > -1) {
+      progress[existingIndex].currentPage = page;
+    } else {
+      progress.push({ hash, currentPage: page });
+    }
+    if (progress.length > MAX_SAVED_BOOKS) {
+      progress = progress.slice(progress.length - MAX_SAVED_BOOKS);
+    }
+    localStorage.setItem('book_progress', JSON.stringify(progress));
+  };
+
   useKeyPress('S', () => {
-    console.log('Toggling slacking mode');
     setSlackingMode(prev => !prev);
   }, ['ctrl', 'shift']);
 
   useKeyPress('ArrowRight', () => {
     if (isSlackingMode && currentPage < book.content.length - 1) {
-      setCurrentPage(currentPage + 1);
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      saveReadingProgress(book.hash, newPage);
     }
   });
+
   useKeyPress('ArrowLeft', () => {
     if (isSlackingMode && currentPage > 0) {
-      setCurrentPage(currentPage - 1);
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      saveReadingProgress(book.hash, newPage);
     }
   });
 
@@ -56,14 +83,18 @@ function App() {
   };
 
   const handleFileLoad = async (file: File) => {
-    console.log('handleFileLoad called for:', file.name);
     try {
+      const hash = await calculateFileHash(file);
       const text = await parseBook(file);
-      console.log('Book parsed, total length:', text.length);
       const pages = chunkText(text, settings.lineLength);
-      console.log('Text chunked into', pages.length, 'pages');
-      setBook({ content: pages, isLoaded: true, fileName: file.name });
-      console.log('Book loaded and parsed successfully');
+      
+      const progress: BookProgress[] = JSON.parse(localStorage.getItem('book_progress') || '[]');
+      const existingBook = progress.find(p => p.hash === hash);
+      const startPage = existingBook ? existingBook.currentPage : 0;
+
+      setBook({ content: pages, isLoaded: true, fileName: file.name, hash });
+      setCurrentPage(startPage);
+      console.log(`Book ${file.name} loaded. Starting at page ${startPage + 1}`);
     } catch (error) {
       console.error('Error parsing book:', error);
       alert('Failed to load or parse the book.');
