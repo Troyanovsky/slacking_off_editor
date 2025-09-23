@@ -1,0 +1,17 @@
+.lineNumbers {
+  width: 50px;
+  height: 100%;
+  padding: 10px;
+  text-align: right;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #999;
+  background-color: #f0e8da;
+  user-select: none;
+  font-family: 'Courier New', Courier, monospace;
+  overflow-y: hidden;
+}
+
+.lineNumber {
+  white-space: nowrap;
+}

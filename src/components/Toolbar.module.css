@@ -1,0 +1,13 @@
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f0e8da;
+  border-top: 1px solid #ddd;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
