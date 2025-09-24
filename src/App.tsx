@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import Editor from './components/Editor';
 import LineNumbers from './components/LineNumbers';
@@ -53,7 +53,7 @@ function App() {
   }, ['ctrl', 'shift']);
 
   useKeyPress('ArrowRight', () => {
-    if (isSlackingMode && currentPage < book.content.length - 1) {
+    if (isSlackingMode && book.isLoaded && currentPage < book.content.length - 1) {
       const newPage = currentPage + 1;
       setCurrentPage(newPage);
       saveReadingProgress(book.hash, newPage);
@@ -61,7 +61,7 @@ function App() {
   });
 
   useKeyPress('ArrowLeft', () => {
-    if (isSlackingMode && currentPage > 0) {
+    if (isSlackingMode && book.isLoaded && currentPage > 0) {
       const newPage = currentPage - 1;
       setCurrentPage(newPage);
       saveReadingProgress(book.hash, newPage);
@@ -86,15 +86,28 @@ function App() {
     try {
       const hash = await calculateFileHash(file);
       const text = await parseBook(file);
+      console.log('Parsed book text:', text.substring(0, 100) + '...'); // Log first 100 chars
+      
+      if (!text || text.trim().length === 0) {
+        console.warn('Book parsing returned empty text');
+        alert('The book appears to be empty or could not be parsed.');
+        return;
+      }
+      
       const pages = chunkText(text, settings.lineLength);
+      console.log('Chunked pages count:', pages.length);
+      console.log('First page content:', pages[0]);
       
       const progress: BookProgress[] = JSON.parse(localStorage.getItem('book_progress') || '[]');
       const existingBook = progress.find(p => p.hash === hash);
       const startPage = existingBook ? existingBook.currentPage : 0;
+      
+      // Ensure startPage is within valid range
+      const validatedStartPage = Math.max(0, Math.min(startPage, pages.length - 1));
 
       setBook({ content: pages, isLoaded: true, fileName: file.name, hash });
-      setCurrentPage(startPage);
-      console.log(`Book ${file.name} loaded. Starting at page ${startPage + 1}`);
+      setCurrentPage(validatedStartPage);
+      console.log(`Book ${file.name} loaded. Starting at page ${validatedStartPage + 1}`);
     } catch (error) {
       console.error('Error parsing book:', error);
       alert('Failed to load or parse the book.');
@@ -102,12 +115,31 @@ function App() {
   };
 
   const chunkText = (text: string, length: number): string[] => {
+    // Handle empty or whitespace-only text
+    if (!text || text.trim().length === 0) {
+      return [];
+    }
+    
     const singleLineText = text.replace(/\r\n|\r|\n/g, '    ');
     const chunks: string[] = [];
     for (let i = 0; i < singleLineText.length; i += length) {
       chunks.push(singleLineText.substring(i, i + length));
     }
     return chunks;
+  };
+
+  // Get the current book page content, with safety checks
+  const getCurrentBookPage = () => {
+    if (!book.isLoaded || !book.content || book.content.length === 0) {
+      return '';
+    }
+    
+    if (currentPage < 0 || currentPage >= book.content.length) {
+      console.warn(`Invalid currentPage index: ${currentPage}, book content length: ${book.content.length}`);
+      return '';
+    }
+    
+    return book.content[currentPage];
   };
 
   return (
@@ -118,7 +150,7 @@ function App() {
           userText={userText}
           setUserText={setUserText}
           isSlackingMode={isSlackingMode}
-          bookPage={book.isLoaded ? book.content[currentPage] : ''}
+          bookPage={getCurrentBookPage()}
           injectionLine={settings.injectionLine}
           lineNumbersRef={lineNumbersRef}
         />

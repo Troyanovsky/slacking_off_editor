@@ -38,6 +38,13 @@ const Editor: React.FC<EditorProps> = ({
     if (!isSlackingMode) {
       return userText;
     }
+    
+    // Only inject book content if it exists
+    if (!bookPage || bookPage.trim().length === 0) {
+      console.log('No book content to inject');
+      return userText;
+    }
+    
     const lines = userText.split('\n');
     if (lines.length < injectionLine) {
       const padding = Array(injectionLine - lines.length).fill('');

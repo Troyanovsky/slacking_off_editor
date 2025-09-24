@@ -50,7 +50,7 @@ This document breaks down the development of the Disguised Text Editor into a se
 2.  **Task 3.2: Create Book Parser Utility**
     - Create a `lib/bookParser.ts` utility.
     - For `.txt` files, simply return the text content.
-    - For `.epub` files, integrate `epub.js` to extract the plain text.
+    - For `.epub` files, use `jszip` to unpack the EPUB (which is a ZIP archive) and `@xmldom/xmldom` to parse the XML content inside to extract the plain text.
 
 3.  **Task 3.3: Manage Book State**
     - Store the parsed book content in the central `AppContext`.

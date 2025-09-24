@@ -11,7 +11,7 @@ The application will be a single-page application (SPA) built with a modern, min
 - **State Management**: **React Hooks** (`useState`, `useReducer`, `useContext`) will manage all application state. This avoids the need for external state management libraries like Redux, simplifying the architecture.
 - **Book Parsing**:
     - **`.txt` files**: Will be read using the native `FileReader` API.
-    - **`.epub` files**: A lightweight library like **`epub.js`** will be used to parse the file and extract its text content.
+    - **`.epub` files**: The **`jszip`** library will be used to unpack the EPUB file (which is a ZIP archive), and **`@xmldom/xmldom`** will be used to parse the XML content inside to extract the text content.
 - **Persistence**: **`localStorage`** will be used to store user settings (injection line, line length) across sessions.
 
 ## 2. High-Level Design
