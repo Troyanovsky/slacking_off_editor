@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import styles from './Editor.module.css';
 
 interface EditorProps {
@@ -24,11 +24,23 @@ const Editor: React.FC<EditorProps> = ({
     console.log('Editor props:', { isSlackingMode, bookPage, injectionLine });
   });
 
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     if (lineNumbersRef.current && textareaRef.current) {
-      lineNumbersRef.current.scrollTop = textareaRef.current.scrollTop;
+      const textarea = textareaRef.current;
+      const lineNumbers = lineNumbersRef.current;
+      
+      // Calculate the scroll ratio to ensure smooth synchronization
+      const scrollRatio = textarea.scrollTop / (textarea.scrollHeight - textarea.clientHeight);
+      
+      // Calculate the max scroll for line numbers
+      const maxLineNumbersScroll = lineNumbers.scrollHeight - lineNumbers.clientHeight;
+      
+      // Apply the same scroll ratio to line numbers
+      const newScrollTop = scrollRatio * maxLineNumbersScroll;
+      
+      lineNumbers.scrollTop = newScrollTop;
     }
-  };
+  }, [lineNumbersRef]);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUserText(event.target.value);
@@ -53,6 +65,11 @@ const Editor: React.FC<EditorProps> = ({
     lines[injectionLine - 1] = bookPage;
     return lines.join('\n');
   };
+
+  // Synchronize scrolling when the component updates
+  useEffect(() => {
+    handleScroll();
+  }, [userText, isSlackingMode, bookPage, handleScroll]);
 
   return (
     <textarea
