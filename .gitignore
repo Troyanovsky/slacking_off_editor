@@ -100,7 +100,6 @@ public/build
 
 # Gatsby build output
 .cache/
-public
 
 # Vite build output
 dist
