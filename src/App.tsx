@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import Editor from './components/Editor';
-import LineNumbers from './components/LineNumbers';
 import Toolbar from './components/Toolbar';
 import SettingsModal from './components/SettingsModal';
 import { parseBook } from './lib/bookParser';
@@ -27,7 +26,6 @@ function App() {
   const [book, setBook] = useState<{ content: string[]; isLoaded: boolean; fileName: string; hash: string }>({ content: [], isLoaded: false, fileName: '', hash: '' });
   const [isSlackingMode, setSlackingMode] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const lineNumbersRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     localStorage.setItem('slacking_off_settings', JSON.stringify(settings));
@@ -68,7 +66,6 @@ function App() {
     }
   });
 
-  const lineCount = userText.split('\n').length;
   const wordCount = userText.split(/\s+/).filter(Boolean).length;
   const charCount = userText.length;
 
@@ -145,14 +142,12 @@ function App() {
   return (
     <div className="app-container">
       <div className="editor-container">
-        <LineNumbers lineCount={lineCount} ref={lineNumbersRef} />
         <Editor
           userText={userText}
           setUserText={setUserText}
           isSlackingMode={isSlackingMode}
           bookPage={getCurrentBookPage()}
           injectionLine={settings.injectionLine}
-          lineNumbersRef={lineNumbersRef}
         />
       </div>
       <Toolbar

@@ -21,7 +21,7 @@ However, with a secret hotkey, you can instantly transform a line of your editor
 *   **Boss Key 老板键:** Instantly toggle between writing and reading mode with a secret hotkey (`Ctrl+Shift+S`) 用秘密热键（`Ctrl+Shift+S`）秒速切换写代码和看书模式。
 *   **Supports Your Books 支持各种书:** Load any `.epub` or `.txt` file 随便加载 `.epub` 或 `.txt` 文件。
 *   **Customizable 可自定义:** Choose which line to display the book content on and how many characters to show at a time 选在第几行显示书籍内容，还能调一行显示多少字。
-*   **Realistic UI 逼真界面:** A clean, paper-like interface with dynamic line numbers that looks like a real writing tool 干净的纸质界面，带动态行号，看起来就像是个正经写作工具。
+*   **Realistic UI 逼真界面:** A clean, paper-like interface that looks like a real writing tool 干净的纸质界面，看起来就像是个正经写作工具。
 *   **Word & Character Count 字数统计:** Real-time feedback on your writing 实时显示你写了多少字。
 *   **Export 导出功能:** Save your written text to a `.txt` file 把你写的内容存成 `.txt` 文件。
 

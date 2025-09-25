@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './Editor.module.css';
 
 interface EditorProps {
@@ -7,7 +7,6 @@ interface EditorProps {
   isSlackingMode: boolean;
   bookPage: string;
   injectionLine: number;
-  lineNumbersRef: React.RefObject<HTMLDivElement>;
 }
 
 const Editor: React.FC<EditorProps> = ({
@@ -16,31 +15,12 @@ const Editor: React.FC<EditorProps> = ({
   isSlackingMode,
   bookPage,
   injectionLine,
-  lineNumbersRef,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     console.log('Editor props:', { isSlackingMode, bookPage, injectionLine });
   });
-
-  const handleScroll = useCallback(() => {
-    if (lineNumbersRef.current && textareaRef.current) {
-      const textarea = textareaRef.current;
-      const lineNumbers = lineNumbersRef.current;
-      
-      // Calculate the scroll ratio to ensure smooth synchronization
-      const scrollRatio = textarea.scrollTop / (textarea.scrollHeight - textarea.clientHeight);
-      
-      // Calculate the max scroll for line numbers
-      const maxLineNumbersScroll = lineNumbers.scrollHeight - lineNumbers.clientHeight;
-      
-      // Apply the same scroll ratio to line numbers
-      const newScrollTop = scrollRatio * maxLineNumbersScroll;
-      
-      lineNumbers.scrollTop = newScrollTop;
-    }
-  }, [lineNumbersRef]);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUserText(event.target.value);
@@ -66,18 +46,12 @@ const Editor: React.FC<EditorProps> = ({
     return lines.join('\n');
   };
 
-  // Synchronize scrolling when the component updates
-  useEffect(() => {
-    handleScroll();
-  }, [userText, isSlackingMode, bookPage, handleScroll]);
-
   return (
     <textarea
       ref={textareaRef}
       className={styles.editor}
       value={getDisplayedText()}
       onChange={handleChange}
-      onScroll={handleScroll}
       wrap="soft"
       readOnly={isSlackingMode}
     />

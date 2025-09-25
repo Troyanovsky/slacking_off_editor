@@ -15,15 +15,13 @@ Users can discreetly read books of their choice while pretending to write in a p
   * Large central editable text area.
   * Background color: `#f6eee3` (paper-like).
   * Text color: Black.
-  * Line numbers displayed alongside text, scrolling in sync.
   * Text wraps if line exceeds viewport width.
-  * Vertical scrolling enabled with line numbers aligned.
+  * Vertical scrolling enabled.
 
 * **Editor Behavior**
 
   * Fully functional text input (typing, editing, deleting, copy/pasting). No rich text formatting.
   * Word wrap enabled.
-  * Line numbers update dynamically as lines are added/removed.
 
 ### 2.2 Bottom Toolbar
 

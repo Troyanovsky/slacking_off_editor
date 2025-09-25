@@ -19,26 +19,26 @@ The application will be a single-page application (SPA) built with a modern, min
 The application is composed of several distinct components that manage different parts of the UI and logic. A central `AppContext` will provide shared state to all components that need it, such as the slacking mode status, book content, and settings.
 
 ```
-+---------------------------------------------------+
-|                       App                         |
-|                                                   |
-|  +-----------------+   +------------------------+ |
-|  |   LineNumbers   |   |         Editor         | |
-|  | (Displays line  |   | (Handles text input &  | |
-|  |    numbers)     |   |  displays book content)| |
-|  +-----------------+   +------------------------+ |
-|                                                   |
-|  +----------------------------------------------+ |
-|  |                    Toolbar                   | |
-|  | (+ Export, Word Count, Settings Button +)    | |
-|  +----------------------------------------------+ |
-|                                                   |
-|  +----------------------------------------------+ |
-|  |                SettingsModal                 | |
-|  | (+ Load Book, Configure, Help +)             | |
-|  +----------------------------------------------+ |
-|                                                   |
-+---------------------------------------------------+
++-------------------------------------------+
+|                   App                     |
+|                                           |
+|  +-------------------------------------+ |
+|  |              Editor                 | |
+|  | (Handles text input &              | |
+|  |  displays book content)            | |
+|  +-------------------------------------+ |
+|                                           |
+|  +-------------------------------------+ |
+|  |              Toolbar                | |
+|  | (+ Export, Word Count, Settings +)  | |
+|  +-------------------------------------+ |
+|                                           |
+|  +-------------------------------------+ |
+|  |           SettingsModal             | |
+|  | (+ Load Book, Configure, Help +)    | |
+|  +-------------------------------------+ |
+|                                           |
++-------------------------------------------+
 ```
 
 ## 3. Component Breakdown
@@ -51,10 +51,6 @@ The application is composed of several distinct components that manage different
 - **Responsibility**: The core component for text interaction. It will render a `<textarea>` for user input. In "Slacking Mode," it will dynamically display the appropriate line of the book at the configured injection line.
 - **Props**: `userText`, `setUserText`.
 - **Internal Logic**: It will derive the displayed content by combining `userText` with the book content when `isSlackingMode` is active.
-
-### `LineNumbers.tsx`
-- **Responsibility**: Displays the line numbers in a separate column that scrolls in sync with the editor's textarea.
-- **Props**: `lineCount`.
 
 ### `Toolbar.tsx`
 - **Responsibility**: A container for the bottom bar controls.
@@ -128,7 +124,6 @@ A standard `create-react-app` directory structure will be used:
 │   ├── components/
 │   │   ├── Editor.tsx
 │   │   ├── Editor.module.css
-│   │   ├── LineNumbers.tsx
 │   │   └── ...
 │   ├── context/
 │   │   └── AppContext.tsx

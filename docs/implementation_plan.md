@@ -13,12 +13,8 @@ This document breaks down the development of the Disguised Text Editor into a se
 2.  **Task 1.2: Basic Layout & Styling**
     - Create the main `App.tsx` layout.
     - Implement the paper-like background (`#f6eee3`) and default text color in `global.css`.
-    - Create the `Editor` and `LineNumbers` components.
-    - Style the components to match the PRD, ensuring the editor is a simple textarea and line numbers are displayed alongside.
-
-3.  **Task 1.3: Dynamic Line Numbers**
-    - Implement the logic to count the lines in the `Editor`'s textarea.
-    - Ensure the `LineNumbers` component updates dynamically as the user types, adds, or removes lines.
+    - Create the `Editor` component.
+    - Style the components to match the PRD, ensuring the editor is a simple textarea.
 
 ### Phase 2: Toolbar & Settings
 
