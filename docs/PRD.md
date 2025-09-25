@@ -52,7 +52,9 @@ Users can discreetly read books of their choice while pretending to write in a p
 * Behavior:
 
   * Normal text editor content is preserved.
-  * At the chosen line number, the displayed content is swapped with book content.
+  * At the chosen line number, the book content is inserted into the editor.
+  * When in slacking mode, book content is inserted at the injection line.
+  * When not in slacking mode, any previously inserted book content is removed/un-inserted.
   * User can navigate book content with keyboard shortcuts:
 
     * Next page (→ or PgDn).
