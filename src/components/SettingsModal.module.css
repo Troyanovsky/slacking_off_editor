@@ -32,6 +32,13 @@
   box-sizing: border-box;
 }
 
+.settingDescription {
+  font-size: 0.85em;
+  color: #666;
+  margin-top: 5px;
+  line-height: 1.4;
+}
+
 .helpSection {
   margin-top: 20px;
   padding-top: 10px;

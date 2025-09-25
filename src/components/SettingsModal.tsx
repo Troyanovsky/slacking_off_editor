@@ -52,6 +52,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               onSettingsChange({ ...settings, injectionLine: parseInt(e.target.value) })
             }
           />
+          <div className={styles.settingDescription}>
+            The line number where book content will be displayed when reading mode is active
+          </div>
         </div>
         <div className={styles.setting}>
           <label>Line Length:</label>
@@ -62,6 +65,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               onSettingsChange({ ...settings, lineLength: parseInt(e.target.value) })
             }
           />
+          <div className={styles.settingDescription}>
+            The number of characters to show in the replaced line when reading mode is active
+          </div>
         </div>
         <div className={styles.helpSection}>
           <h3>Help</h3>

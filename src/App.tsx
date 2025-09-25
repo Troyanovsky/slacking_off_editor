@@ -22,7 +22,7 @@ function App() {
     const savedSettings = localStorage.getItem('slacking_off_settings');
     return savedSettings
       ? JSON.parse(savedSettings)
-      : { injectionLine: 5, lineLength: 80 };
+      : { injectionLine: 5, lineLength: 60 };
   });
   const [book, setBook] = useState<{ content: string[]; isLoaded: boolean; fileName: string; hash: string }>({ content: [], isLoaded: false, fileName: '', hash: '' });
   const [isSlackingMode, setSlackingMode] = useState(false);
