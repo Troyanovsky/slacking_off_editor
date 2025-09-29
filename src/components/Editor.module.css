@@ -11,4 +11,11 @@
   color: inherit;
   font-family: 'Roboto Mono', monospace;
   font-weight: 500;
+  white-space: pre-wrap; /* Important for contentEditable to respect newlines */
+}
+
+.book-page {
+  display: block; /* Ensures it takes its own line */
+  user-select: none; /* Prevents text selection */
+  cursor: default; /* Show default cursor */
 }

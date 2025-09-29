@@ -17,9 +17,10 @@ However, with a secret hotkey, you can instantly transform a line of your editor
 ## Features 特色功能
 
 *   **Discreet Reading 偷摸看书:** Read your books inside a fully functional text editor 在一个功能完整的文本编辑器里看你的书。
+*   **Interactive Slacking Mode 交互式摸鱼模式:** Even in reading mode, you can continue to type and edit your own text. The book content is locked, but your writing isn't! 即使在阅读模式下，你也可以继续输入和编辑自己的文本。书籍内容是锁定的，但你的写作不受影响！
 *   **Automatic Progress Saving 自动存进度:** Your reading position for the last 5 books is automatically saved. Pick up right where you left off! 自动保存最近5本书的阅读进度，下次打开直接从上次看到的地方继续！
 *   **Boss Key 老板键:** Instantly toggle between writing and reading mode with a secret hotkey (`Ctrl+Shift+S`) 用秘密热键（`Ctrl+Shift+S`）秒速切换写代码和看书模式。
-*   **Supports Your Books 支持各种书:** Load any `.epub` or `.txt` file 随便加载 `.epub` 或 `.txt` 文件。
+*   **Supports Your Books 支持各种书:** Load any `.epub` or `.txt` file 可以加载 `.epub` 或 `.txt` 文件。
 *   **Customizable 可自定义:** Choose which line to display the book content on and how many characters to show at a time 选在第几行显示书籍内容，还能调一行显示多少字。
 *   **Realistic UI 逼真界面:** A clean, paper-like interface that looks like a real writing tool 干净的纸质界面，看起来就像是个正经写作工具。
 *   **Word & Character Count 字数统计:** Real-time feedback on your writing 实时显示你写了多少字。
@@ -45,7 +46,7 @@ However, with a secret hotkey, you can instantly transform a line of your editor
     *   Set your desired "injection line" and "line length" 设置"注入行"和"行长度"。
 5.  **Start slacking! 开始摸鱼!:**
     *   Press `Ctrl+Shift+S` to toggle reading mode 按 `Ctrl+Shift+S` 切换到阅读模式。
-    *   Use the left and right arrow keys to navigate through your book 用左右箭头键翻页。
+    *   In reading mode, use the left and right arrow keys to turn pages. You can still type and edit your own text around the book content. Your cursor will automatically skip over the book line. 在阅读模式下，用左右箭头键翻页。你仍然可以在书籍内容周围输入和编辑你自己的文本。光标会自动跳过书籍所在的行。
 
 ## Deployed App 在线体验
 

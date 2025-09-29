@@ -48,6 +48,7 @@ function App() {
 
   useKeyPress('S', () => {
     setSlackingMode(prev => !prev);
+    return true; // Always prevent default for the boss key
   }, ['ctrl', 'shift']);
 
   useKeyPress('ArrowRight', () => {
@@ -55,7 +56,9 @@ function App() {
       const newPage = currentPage + 1;
       setCurrentPage(newPage);
       saveReadingProgress(book.hash, newPage);
+      return true; // Event handled, prevent default
     }
+    return false; // Event not handled, allow default
   });
 
   useKeyPress('ArrowLeft', () => {
@@ -63,7 +66,9 @@ function App() {
       const newPage = currentPage - 1;
       setCurrentPage(newPage);
       saveReadingProgress(book.hash, newPage);
+      return true; // Event handled, prevent default
     }
+    return false; // Event not handled, allow default
   });
 
   const wordCount = userText.split(/\s+/).filter(Boolean).length;

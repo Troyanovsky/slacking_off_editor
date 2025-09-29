@@ -49,19 +49,16 @@ Users can discreetly read books of their choice while pretending to write in a p
 ### 2.4 Reading Mode (Slacking Mode)
 
 * **Triggered by Boss Key Shortcut** (`Ctrl/Command+Shift+S`).
-* Behavior:
-
+* **Behavior**:
   * Normal text editor content is preserved.
-  * At the chosen line number, the book content is inserted into the editor.
-  * When in slacking mode, book content is inserted at the injection line.
-  * When not in slacking mode, any previously inserted book content is removed/un-inserted.
-  * User can navigate book content with keyboard shortcuts:
-
-    * Next page (→ or PgDn).
-    * Previous page (← or PgUp).
-  * Only the selected line updates with book content; everything else remains normal and editable.
-  * Word/character count excludes injected book text (only user text is counted).
-* **Exit Reading Mode**: Boss key returns editor to normal typing view.
+  * At the chosen line number, the book content is inserted into the editor as a non-editable line.
+  * When not in slacking mode, any previously inserted book content is removed.
+* **Interaction in Slacking Mode**:
+  * **Editing**: The user's own text remains fully editable, allowing them to type, delete, and modify content as usual. The injected book content is locked and cannot be edited.
+  * **Cursor Movement**: The cursor automatically skips over the non-editable book content when using the up and down arrow keys. Clicks on the book content are ignored.
+  * **Page Navigation**: The left (←) and right (→) arrow keys are hijacked to serve as page-turning controls for the book. In normal writing mode, they revert to their standard cursor movement function.
+  * **Word Count**: The word and character count continue to only track the user's own text, ignoring the injected book content.
+* **Exit Reading Mode**: Pressing the boss key shortcut again returns the editor to the normal writing view, removing the book content.
 
 ---
 

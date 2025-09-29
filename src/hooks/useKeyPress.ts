@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export const useKeyPress = (targetKey: string, callback: () => void, modifiers: string[] = []) => {
+export const useKeyPress = (targetKey: string, callback: () => boolean, modifiers: string[] = []) => {
   useEffect(() => {
     const downHandler = (event: KeyboardEvent) => {
       if (event.key.toLowerCase() === targetKey.toLowerCase()) {
@@ -13,8 +13,9 @@ export const useKeyPress = (targetKey: string, callback: () => void, modifiers: 
         });
 
         if (allModifiersPressed) {
-          event.preventDefault();
-          callback();
+          if (callback()) {
+            event.preventDefault();
+          }
         }
       }
     };
