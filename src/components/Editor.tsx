@@ -66,7 +66,8 @@ const Editor: React.FC<EditorProps> = ({
     const children = Array.from(target.childNodes);
     // Reconstruct the userText string from the DOM, ignoring the book page
     const newText = children.map(node => {
-      if (node.nodeType === 1 && (node as HTMLElement).classList.contains(styles['book-page'])) {
+      // Correctly check if the node contains the book page span
+      if (node.nodeType === 1 && (node as HTMLElement).querySelector(`.${styles['book-page']}`)) {
         return null; // Exclude book page from the text
       }
       // Handle empty lines which browsers might represent as a div with a <br>
@@ -91,6 +92,13 @@ const Editor: React.FC<EditorProps> = ({
 
     // 1. Prevent deletion of the book page span
     if (e.key === 'Backspace' || e.key === 'Delete') {
+      // First, check if the selection includes the book page
+      const selectedContent = range.cloneContents();
+      if (selectedContent.querySelector(`.${styles['book-page']}`)) {
+        e.preventDefault();
+        return;
+      }
+
       const bookPageEl = editorRef.current?.querySelector(`.${styles['book-page']}`);
       if (!bookPageEl) return;
 
