@@ -1,5 +1,6 @@
 import React from 'react';
-import styles from './SettingsModal.module.css';
+import modalStyles from './SettingsModal.module.css';
+import buttonStyles from './Button.module.css';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -35,15 +36,15 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   };
 
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
+    <div className={modalStyles.modalOverlay}>
+      <div className={modalStyles.modalContent}>
         <h2>Settings</h2>
-        <div className={styles.setting}>
+        <div className={modalStyles.setting}>
           <label>Load Book (.txt, .epub):</label>
           <input type="file" accept=".txt,.epub" onChange={handleFileChange} />
           {fileName && <p>Loaded file: {fileName}</p>}
         </div>
-        <div className={styles.setting}>
+        <div className={modalStyles.setting}>
           <label>Injection Line:</label>
           <input
             type="number"
@@ -52,11 +53,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               onSettingsChange({ ...settings, injectionLine: parseInt(e.target.value) })
             }
           />
-          <div className={styles.settingDescription}>
+          <div className={modalStyles.settingDescription}>
             The line number where book content will be displayed when reading mode is active
           </div>
         </div>
-        <div className={styles.setting}>
+        <div className={modalStyles.setting}>
           <label>Line Length:</label>
           <input
             type="number"
@@ -65,16 +66,18 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               onSettingsChange({ ...settings, lineLength: parseInt(e.target.value) })
             }
           />
-          <div className={styles.settingDescription}>
+          <div className={modalStyles.settingDescription}>
             The number of characters to show in the replaced line when reading mode is active
           </div>
         </div>
-        <div className={styles.helpSection}>
+        <div className={modalStyles.helpSection}>
           <h3>Help</h3>
           <p><b>Boss Key:</b> Ctrl+Shift+S to toggle reading mode.</p>
           <p><b>Navigation:</b> Left/Right arrow keys to change pages in reading mode.</p>
         </div>
-        <button onClick={onClose}>Close</button>
+        <div className={modalStyles.modalFooter}>
+          <button onClick={onClose} className={buttonStyles.button}>Close</button>
+        </div>
       </div>
     </div>
   );

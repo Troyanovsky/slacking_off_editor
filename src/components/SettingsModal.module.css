@@ -44,3 +44,8 @@
   padding-top: 10px;
   border-top: 1px solid #ddd;
 }
+
+.modalFooter {
+  margin-top: 20px;
+  text-align: right;
+}
