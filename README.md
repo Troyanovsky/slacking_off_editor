@@ -50,9 +50,9 @@ However, with a secret hotkey, you can instantly transform a line of your editor
 
 ## Deployed App 在线体验
 
-Try the app online: [https://slacking-off-editor.vercel.app/](https://slacking-off-editor.vercel.app/)
+Try the app online: [https://slacking-off-editor.pages.dev/](https://slacking-off-editor.pages.dev/)
 
-在线体验：[https://slacking-off-editor.vercel.app/](https://slacking-off-editor.vercel.app/)
+在线体验：[https://slacking-off-editor.pages.dev/](https://slacking-off-editor.pages.dev/)
 
 ## Contributing 参与贡献
 
