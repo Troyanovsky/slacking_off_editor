@@ -28,6 +28,14 @@ function App() {
   const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
+    const hasVisited = localStorage.getItem('hasVisited');
+    if (!hasVisited) {
+      setSettingsOpen(true);
+      localStorage.setItem('hasVisited', 'true');
+    }
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem('slacking_off_settings', JSON.stringify(settings));
   }, [settings]);
 

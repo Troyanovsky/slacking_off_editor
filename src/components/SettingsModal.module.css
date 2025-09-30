@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 200;
 }
 
 .modalContent {
@@ -48,4 +49,8 @@
 .modalFooter {
   margin-top: 20px;
   text-align: right;
+}
+
+.guideList {
+  padding-left: 20px;
 }

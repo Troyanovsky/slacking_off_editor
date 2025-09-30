@@ -71,6 +71,13 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
         </div>
         <div className={modalStyles.helpSection}>
+          <h3>How to Use</h3>
+          <ol className={modalStyles.guideList}>
+            <li>Choose a book to load.</li>
+            <li>Adjust the injection line and line length as needed.</li>
+            <li>Write your document as usual in writing mode.</li>
+            <li>Toggle reading mode with the boss key (Ctrl+Shift+S).</li>
+          </ol>
           <h3>Help</h3>
           <p><b>Boss Key:</b> Ctrl+Shift+S to toggle reading mode.</p>
           <p><b>Navigation:</b> Left/Right arrow keys to change pages in reading mode.</p>
