@@ -11,7 +11,7 @@ const MAX_SAVED_BOOKS = 5;
 
 interface BookProgress {
   hash: string;
-  currentPage: number;
+  characterOffset: number;
 }
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
       ? JSON.parse(savedSettings)
       : { injectionLine: 5, lineLength: 60 };
   });
-  const [book, setBook] = useState<{ content: string[]; isLoaded: boolean; fileName: string; hash: string }>({ content: [], isLoaded: false, fileName: '', hash: '' });
+  const [book, setBook] = useState<{ rawText: string; content: string[]; isLoaded: boolean; fileName: string; hash: string }>({ rawText: '', content: [], isLoaded: false, fileName: '', hash: '' });
   const [isSlackingMode, setSlackingMode] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -39,19 +39,40 @@ function App() {
     localStorage.setItem('slacking_off_settings', JSON.stringify(settings));
   }, [settings]);
 
-  const saveReadingProgress = (hash: string, page: number) => {
+  useEffect(() => {
+    if (!book.isLoaded) return;
+
+    const newContent = chunkText(book.rawText, settings.lineLength);
+    const currentOffset = currentPage * settings.lineLength;
+    const newPage = Math.floor(currentOffset / settings.lineLength);
+
+    setBook(prevBook => ({ ...prevBook, content: newContent }));
+    setCurrentPage(newPage);
+  }, [settings.lineLength]);
+
+  const saveReadingProgress = (hash: string, offset: number) => {
     if (!hash) return;
     let progress: BookProgress[] = JSON.parse(localStorage.getItem('book_progress') || '[]');
     const existingIndex = progress.findIndex(p => p.hash === hash);
     if (existingIndex > -1) {
-      progress[existingIndex].currentPage = page;
+      progress[existingIndex].characterOffset = offset;
     } else {
-      progress.push({ hash, currentPage: page });
+      progress.push({ hash, characterOffset: offset });
     }
     if (progress.length > MAX_SAVED_BOOKS) {
       progress = progress.slice(progress.length - MAX_SAVED_BOOKS);
     }
     localStorage.setItem('book_progress', JSON.stringify(progress));
+  };
+
+  const handlePositionChange = (newOffset: number) => {
+    if (!book.isLoaded) return;
+
+    const validatedOffset = Math.max(0, Math.min(newOffset, book.rawText.length));
+    const newPage = Math.floor(validatedOffset / settings.lineLength);
+
+    setCurrentPage(newPage);
+    saveReadingProgress(book.hash, validatedOffset);
   };
 
   useKeyPress('S', () => {
@@ -63,7 +84,7 @@ function App() {
     if (isSlackingMode && book.isLoaded && currentPage < book.content.length - 1) {
       const newPage = currentPage + 1;
       setCurrentPage(newPage);
-      saveReadingProgress(book.hash, newPage);
+      saveReadingProgress(book.hash, newPage * settings.lineLength);
       return true; // Event handled, prevent default
     }
     return false; // Event not handled, allow default
@@ -73,7 +94,7 @@ function App() {
     if (isSlackingMode && book.isLoaded && currentPage > 0) {
       const newPage = currentPage - 1;
       setCurrentPage(newPage);
-      saveReadingProgress(book.hash, newPage);
+      saveReadingProgress(book.hash, newPage * settings.lineLength);
       return true; // Event handled, prevent default
     }
     return false; // Event not handled, allow default
@@ -108,14 +129,24 @@ function App() {
       console.log('Chunked pages count:', pages.length);
       console.log('First page content:', pages[0]);
       
-      const progress: BookProgress[] = JSON.parse(localStorage.getItem('book_progress') || '[]');
+      const progress: (BookProgress | { hash: string; currentPage: number })[] = JSON.parse(localStorage.getItem('book_progress') || '[]');
       const existingBook = progress.find(p => p.hash === hash);
-      const startPage = existingBook ? existingBook.currentPage : 0;
+      let startOffset = 0;
+      if (existingBook) {
+        if ('characterOffset' in existingBook) {
+          startOffset = existingBook.characterOffset;
+        } else if ('currentPage' in existingBook) {
+          // Migration for old data structure
+          startOffset = existingBook.currentPage * settings.lineLength;
+        }
+      }
+
+      const startPage = Math.floor(startOffset / settings.lineLength);
       
       // Ensure startPage is within valid range
       const validatedStartPage = Math.max(0, Math.min(startPage, pages.length - 1));
 
-      setBook({ content: pages, isLoaded: true, fileName: file.name, hash });
+      setBook({ rawText: text, content: pages, isLoaded: true, fileName: file.name, hash });
       setCurrentPage(validatedStartPage);
       console.log(`Book ${file.name} loaded. Starting at page ${validatedStartPage + 1}`);
     } catch (error) {
@@ -176,6 +207,10 @@ function App() {
         onSettingsChange={setSettings}
         onFileLoad={handleFileLoad}
         fileName={book.fileName}
+        bookIsLoaded={book.isLoaded}
+        bookLength={book.rawText.length}
+        characterPosition={currentPage * settings.lineLength}
+        onPositionChange={handlePositionChange}
       />
     </div>
   );

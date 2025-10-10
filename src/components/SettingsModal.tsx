@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import modalStyles from './SettingsModal.module.css';
 import buttonStyles from './Button.module.css';
 
@@ -15,6 +15,10 @@ interface SettingsModalProps {
   }) => void;
   onFileLoad: (file: File) => void;
   fileName: string;
+  bookIsLoaded: boolean;
+  bookLength: number;
+  characterPosition: number;
+  onPositionChange: (position: number) => void;
 }
 
 const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -24,7 +28,17 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   onSettingsChange,
   onFileLoad,
   fileName,
+  bookIsLoaded,
+  bookLength,
+  characterPosition,
+  onPositionChange,
 }) => {
+  const [localPosition, setLocalPosition] = useState(characterPosition);
+
+  useEffect(() => {
+    setLocalPosition(characterPosition);
+  }, [characterPosition]);
+
   if (!isOpen) {
     return null;
   }
@@ -32,6 +46,16 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       onFileLoad(event.target.files[0]);
+    }
+  };
+
+  const handlePositionBlur = () => {
+    onPositionChange(localPosition);
+  };
+
+  const handlePositionKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onPositionChange(localPosition);
     }
   };
 
@@ -44,6 +68,21 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           <input type="file" accept=".txt,.epub" onChange={handleFileChange} />
           {fileName && <p>Loaded file: {fileName}</p>}
         </div>
+        {bookIsLoaded && (
+          <div className={modalStyles.setting}>
+            <label>Reading Position:</label>
+            <input
+              type="number"
+              value={localPosition}
+              onChange={(e) => setLocalPosition(parseInt(e.target.value))}
+              onBlur={handlePositionBlur}
+              onKeyDown={handlePositionKeyDown}
+            />
+            <div className={modalStyles.settingDescription}>
+              Current position: {characterPosition} / {bookLength}
+            </div>
+          </div>
+        )}
         <div className={modalStyles.setting}>
           <label>Injection Line:</label>
           <input
