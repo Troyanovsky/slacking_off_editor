@@ -15,7 +15,9 @@ interface BookProgress {
 }
 
 function App() {
-  const [userText, setUserText] = useState('');
+  const [userText, setUserText] = useState(() => 
+    localStorage.getItem('slacking_off_user_text') || ''
+  );
   const [isSettingsOpen, setSettingsOpen] = useState(false);
   const [settings, setSettings] = useState(() => {
     const savedSettings = localStorage.getItem('slacking_off_settings');
@@ -38,6 +40,14 @@ function App() {
   useEffect(() => {
     localStorage.setItem('slacking_off_settings', JSON.stringify(settings));
   }, [settings]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      localStorage.setItem('slacking_off_user_text', userText);
+    }, 5000);
+
+    return () => clearTimeout(timeoutId);
+  }, [userText]);
 
   useEffect(() => {
     if (!book.isLoaded) return;
