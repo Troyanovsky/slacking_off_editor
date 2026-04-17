@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, KeyboardEvent, MouseEvent, FormEvent } from 'react';
+import React, { useEffect, useRef, KeyboardEvent, MouseEvent, FormEvent, ClipboardEvent } from 'react';
 import styles from './Editor.module.css';
 
 interface EditorProps {
@@ -164,6 +164,13 @@ const Editor: React.FC<EditorProps> = ({
     }
   };
 
+  // Strip formatting when pasting, keeping only plain text
+  const handlePaste = (e: ClipboardEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const text = e.clipboardData.getData('text/plain');
+    document.execCommand('insertText', false, text);
+  };
+
   return (
     <div
       ref={editorRef}
@@ -172,6 +179,7 @@ const Editor: React.FC<EditorProps> = ({
       onInput={handleInput}
       onKeyDown={handleKeyDown}
       onClick={handleClick}
+      onPaste={handlePaste}
       suppressContentEditableWarning={true} // Necessary for React with contentEditable
     />
   );
